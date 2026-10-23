@@ -209,8 +209,9 @@ public partial class Form1 : Form
             return;
         }
 
+        var displayRectangle = organizerPanel.DisplayRectangle;
         var left = organizerPanel.Padding.Left;
-        var right = organizerPanel.ClientSize.Width - organizerPanel.Padding.Right;
+        var right = displayRectangle.Width - organizerPanel.Padding.Right;
         var width = Math.Max(0, right - left);
         var gridTop = 75;
         var bottomAreaHeight = 94;

@@ -179,6 +179,7 @@ partial class Form1
 
         organizerPanel.Dock = DockStyle.Fill;
         organizerPanel.BackColor = Color.White;
+        organizerPanel.AutoScroll = true;
         organizerPanel.Padding = new Padding(12);
         organizerPanel.Visible = false;
         organizerPanel.Controls.Add(fileGrid);
@@ -232,6 +233,8 @@ partial class Form1
         fileGrid.RowHeadersVisible = false;
         fileGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         fileGrid.Size = new Size(588, 204);
+        fileGrid.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+        fileGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
         fileGrid.Columns.Add("Name", "Name");
         fileGrid.Columns.Add("Extension", "Extension");
         fileGrid.Columns.Add("Size", "Size");
@@ -273,6 +276,8 @@ partial class Form1
         planGrid.RowHeadersVisible = false;
         planGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         planGrid.Size = new Size(588, 204);
+        planGrid.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+        planGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
         planGrid.Visible = false;
         planGrid.Columns.Add("Name", "Name");
         planGrid.Columns.Add("Category", "Category");
@@ -281,6 +286,7 @@ partial class Form1
 
         logsPanel.Dock = DockStyle.Fill;
         logsPanel.BackColor = Color.White;
+        logsPanel.AutoScroll = true;
         logsPanel.Padding = new Padding(12);
         logsPanel.Visible = false;
         logsPanel.Controls.Add(activityGrid);
@@ -299,6 +305,8 @@ partial class Form1
         activityGrid.ReadOnly = true;
         activityGrid.RowHeadersVisible = false;
         activityGrid.ScrollBars = ScrollBars.Vertical;
+        activityGrid.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+        activityGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
         activityGrid.Columns.Add("Timestamp", "Timestamp");
         activityGrid.Columns.Add("Action", "Action");
         activityGrid.Columns.Add("Status", "Status");
@@ -310,6 +318,7 @@ partial class Form1
 
         settingsPanel.Dock = DockStyle.Fill;
         settingsPanel.BackColor = Color.White;
+        settingsPanel.AutoScroll = true;
         settingsPanel.Padding = new Padding(18);
         settingsPanel.Visible = false;
         IncludeSubdirectoriesCheckBox.AutoSize = true;
@@ -326,6 +335,7 @@ partial class Form1
         var templateLabel = new Label { AutoSize = true, Location = new Point(18, 130), Text = "Rename template:" };
         RenameTemplateTextBox.Location = new Point(140, 127);
         RenameTemplateTextBox.Size = new Size(300, 23);
+        RenameTemplateTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         saveSettingsButton.Location = new Point(18, 180);
         saveSettingsButton.Size = new Size(110, 30);
         saveSettingsButton.Text = "Save Settings";
@@ -342,6 +352,7 @@ partial class Form1
 
         helpPanel.Dock = DockStyle.Fill;
         helpPanel.BackColor = Color.White;
+        helpPanel.AutoScroll = true;
         helpPanel.Padding = new Padding(22);
         helpPanel.Visible = false;
         var helpText = new Label
@@ -370,7 +381,7 @@ partial class Form1
         statusLabel.Text = "Ready";
         statusLabel.ForeColor = Color.FromArgb(91, 106, 120);
 
-        AutoScaleMode = AutoScaleMode.Font;
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(900, 600);
         Controls.Add(rootLayout);
         Controls.Add(statusStrip);
