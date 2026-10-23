@@ -55,6 +55,9 @@ The publish directory is ignored by Git. Review the output and test it on a clea
 
 ## Safety behavior
 
+- Only files directly inside the selected folder are scanned by default.
+- Existing subfolders are not traversed or reorganized.
+- Planned destinations use `Category\yyyy-MM-dd\filename`, based on the file's last-modified date.
 - Organization is previewed before execution.
 - Existing destination files are treated as conflicts.
 - Planned duplicate destinations are rejected.
@@ -64,4 +67,4 @@ The publish directory is ignored by Git. Review the output and test it on a clea
 
 ## Current scope
 
-The current implementation provides scanning, categorization, organization planning, batch rename planning, operation history, undo, settings, activity logs, and help content. Installer creation, automatic updates, telemetry, cloud synchronization, and network services are intentionally not included.
+The current implementation provides scanning, categorization, organization planning, batch rename planning, operation history, undo, settings, activity logs, and an About page. Installer creation, automatic updates, telemetry, cloud synchronization, and network services are intentionally not included.

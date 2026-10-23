@@ -45,7 +45,6 @@ public partial class Form1 : Form
         try
         {
             settings = await settingsStore.LoadAsync();
-            IncludeSubdirectoriesCheckBox.Checked = settings.IncludeSubdirectories;
             ShowConsoleOutputCheckBox.Checked = settings.ShowConsoleOutput;
             LogRetentionNumeric.Value = Math.Clamp(settings.LogRetentionLimit, 1, 1000);
             RenameTemplateTextBox.Text = settings.RenameTemplate;
@@ -67,7 +66,7 @@ public partial class Form1 : Form
         {
             settings = settings with
             {
-                IncludeSubdirectories = IncludeSubdirectoriesCheckBox.Checked,
+                IncludeSubdirectories = false,
                 ShowConsoleOutput = ShowConsoleOutputCheckBox.Checked,
                 LogRetentionLimit = (int)LogRetentionNumeric.Value,
                 RenameTemplate = RenameTemplateTextBox.Text,
@@ -100,7 +99,7 @@ public partial class Form1 : Form
             "Organizer" => organizerPanel,
             "Activity Logs" => logsPanel,
             "Settings" => settingsPanel,
-            "Help & About" => helpPanel,
+            "About" => helpPanel,
             _ => dashboardLayout
         };
 
@@ -119,7 +118,7 @@ public partial class Form1 : Form
             "Organizer" => "Choose a folder and preview how files will be organized.",
             "Activity Logs" => "Review recent operations and their results.",
             "Settings" => "Configure categories, safety, and application preferences.",
-            "Help & About" => "Learn how Sortexa works and get quick-start guidance.",
+            "About" => "Sortexa is a local-first Windows file organization toolkit.",
             _ => string.Empty
         };
 
@@ -269,7 +268,7 @@ public partial class Form1 : Form
                 folder,
                 progress,
                 scanCancellation.Token,
-                settings.IncludeSubdirectories);
+                includeSubdirectories: false);
 
             foreach (var file in result.Files)
             {
@@ -534,7 +533,7 @@ public partial class Form1 : Form
     {
         settings = settings with
         {
-            IncludeSubdirectories = IncludeSubdirectoriesCheckBox.Checked,
+            IncludeSubdirectories = false,
             ShowConsoleOutput = ShowConsoleOutputCheckBox.Checked,
             LogRetentionLimit = (int)LogRetentionNumeric.Value,
             RenameTemplate = RenameTemplateTextBox.Text,
@@ -553,7 +552,6 @@ public partial class Form1 : Form
         }
 
         settings = new AppSettings();
-        IncludeSubdirectoriesCheckBox.Checked = settings.IncludeSubdirectories;
         ShowConsoleOutputCheckBox.Checked = settings.ShowConsoleOutput;
         LogRetentionNumeric.Value = settings.LogRetentionLimit;
         RenameTemplateTextBox.Text = settings.RenameTemplate;

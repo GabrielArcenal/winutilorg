@@ -13,7 +13,7 @@ public sealed class FileScanner
         string rootPath,
         IProgress<int>? progress = null,
         CancellationToken cancellationToken = default,
-        bool includeSubdirectories = true)
+        bool includeSubdirectories = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(rootPath);
 

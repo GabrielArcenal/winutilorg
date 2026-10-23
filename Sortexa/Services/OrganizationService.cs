@@ -19,7 +19,8 @@ public sealed class OrganizationService
         foreach (var file in files)
         {
             var category = categorySelector(file);
-            var destinationDirectory = Path.Combine(destinationRoot, category);
+            var dateFolder = file.LastModified.ToString("yyyy-MM-dd");
+            var destinationDirectory = Path.Combine(destinationRoot, category, dateFolder);
             var destinationPath = Path.Combine(destinationDirectory, file.Name);
             var conflictReason = GetConflictReason(
                 file,

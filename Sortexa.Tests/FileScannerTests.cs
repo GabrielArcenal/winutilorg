@@ -15,7 +15,9 @@ public sealed class FileScannerTests
         await File.WriteAllTextAsync(Path.Combine(directory.Path, "photo.JPG"), "image");
         await File.WriteAllTextAsync(Path.Combine(directory.Path, "nested", "notes.txt"), "notes");
 
-        var result = await new FileScanner().ScanAsync(directory.Path);
+        var result = await new FileScanner().ScanAsync(
+            directory.Path,
+            includeSubdirectories: true);
 
         Assert.False(result.IsCancelled);
         Assert.Equal(2, result.Files.Count);

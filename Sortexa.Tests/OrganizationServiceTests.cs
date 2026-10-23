@@ -12,9 +12,11 @@ public sealed class OrganizationServiceTests
         using var directory = new TemporaryDirectory();
         var sourcePath = Path.Combine(directory.Path, "source.txt");
         var destinationRoot = Path.Combine(directory.Path, "output");
-        Directory.CreateDirectory(Path.Combine(destinationRoot, "Documents"));
         File.WriteAllText(sourcePath, "source");
-        File.WriteAllText(Path.Combine(destinationRoot, "Documents", "source.txt"), "existing");
+        var dateFolder = File.GetLastWriteTime(sourcePath).ToString("yyyy-MM-dd");
+        var destinationDirectory = Path.Combine(destinationRoot, "Documents", dateFolder);
+        Directory.CreateDirectory(destinationDirectory);
+        File.WriteAllText(Path.Combine(destinationDirectory, "source.txt"), "existing");
 
         var file = FileMetadata.FromFileInfo(new FileInfo(sourcePath));
         var plan = new OrganizationService().CreatePlan(
@@ -25,6 +27,7 @@ public sealed class OrganizationServiceTests
         var item = Assert.Single(plan.Items);
         Assert.True(item.IsConflict);
         Assert.Equal("Destination already exists", item.ConflictReason);
+        Assert.Contains(file.LastModified.ToString("yyyy-MM-dd"), item.DestinationPath);
     }
 
     [Fact]

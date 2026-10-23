@@ -31,7 +31,6 @@ partial class Form1
     private Button refreshLogsButton = null!;
     private Panel settingsPanel = null!;
     private TableLayoutPanel settingsLayout = null!;
-    private CheckBox IncludeSubdirectoriesCheckBox = null!;
     private CheckBox ShowConsoleOutputCheckBox = null!;
     private NumericUpDown LogRetentionNumeric = null!;
     private TextBox RenameTemplateTextBox = null!;
@@ -83,7 +82,6 @@ partial class Form1
         refreshLogsButton = new Button();
         settingsPanel = new Panel();
         settingsLayout = new TableLayoutPanel();
-        IncludeSubdirectoriesCheckBox = new CheckBox();
         ShowConsoleOutputCheckBox = new CheckBox();
         LogRetentionNumeric = new NumericUpDown();
         RenameTemplateTextBox = new TextBox();
@@ -138,7 +136,7 @@ partial class Form1
         AddNavigationButton("Organizer");
         AddNavigationButton("Activity Logs");
         AddNavigationButton("Settings");
-        AddNavigationButton("Help & About");
+        AddNavigationButton("About");
 
         contentPanel.BackColor = Color.FromArgb(247, 249, 251);
         contentPanel.Dock = DockStyle.Fill;
@@ -331,14 +329,12 @@ partial class Form1
         settingsLayout.Dock = DockStyle.Top;
         settingsLayout.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
         settingsLayout.Padding = new Padding(0);
-        settingsLayout.RowCount = 5;
+        settingsLayout.RowCount = 4;
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        IncludeSubdirectoriesCheckBox.AutoSize = true;
-        IncludeSubdirectoriesCheckBox.Text = "Scan subdirectories";
         ShowConsoleOutputCheckBox.AutoSize = true;
         ShowConsoleOutputCheckBox.Text = "Enable optional console output";
         var retentionLabel = new Label { AutoSize = true, Text = "Log retention limit:", Anchor = AnchorStyles.Left };
@@ -364,15 +360,13 @@ partial class Form1
         };
         settingsButtons.Controls.Add(saveSettingsButton);
         settingsButtons.Controls.Add(resetSettingsButton);
-        settingsLayout.Controls.Add(IncludeSubdirectoriesCheckBox, 0, 0);
-        settingsLayout.SetColumnSpan(IncludeSubdirectoriesCheckBox, 2);
-        settingsLayout.Controls.Add(ShowConsoleOutputCheckBox, 0, 1);
+        settingsLayout.Controls.Add(ShowConsoleOutputCheckBox, 0, 0);
         settingsLayout.SetColumnSpan(ShowConsoleOutputCheckBox, 2);
-        settingsLayout.Controls.Add(retentionLabel, 0, 2);
-        settingsLayout.Controls.Add(LogRetentionNumeric, 1, 2);
-        settingsLayout.Controls.Add(templateLabel, 0, 3);
-        settingsLayout.Controls.Add(RenameTemplateTextBox, 1, 3);
-        settingsLayout.Controls.Add(settingsButtons, 0, 4);
+        settingsLayout.Controls.Add(retentionLabel, 0, 1);
+        settingsLayout.Controls.Add(LogRetentionNumeric, 1, 1);
+        settingsLayout.Controls.Add(templateLabel, 0, 2);
+        settingsLayout.Controls.Add(RenameTemplateTextBox, 1, 2);
+        settingsLayout.Controls.Add(settingsButtons, 0, 3);
         settingsLayout.SetColumnSpan(settingsButtons, 2);
         settingsPanel.Controls.Add(settingsLayout);
 
@@ -387,7 +381,7 @@ partial class Form1
             Dock = DockStyle.Fill,
             Font = new Font("Segoe UI", 10F),
             ForeColor = Color.FromArgb(45, 58, 70),
-            Text = "Quick start\r\n\r\n1. Select a source folder.\r\n2. Scan and review the files.\r\n3. Choose a destination and preview the plan.\r\n4. Resolve conflicts before organizing.\r\n5. Use Undo Last Operation when the original files are still available.\r\n\r\nSortexa\r\nA local-first Windows file organization toolkit.",
+            Text = "Sortexa\r\n\r\nVersion 1.0\r\n\r\nA local-first Windows file organization toolkit for reviewing, organizing, and safely restoring files.\r\n\r\nSortexa does not require an account or network connection. Files are only moved after you review and approve an organization plan.",
         };
         helpPanel.Controls.Add(helpText);
         replayWelcomeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
