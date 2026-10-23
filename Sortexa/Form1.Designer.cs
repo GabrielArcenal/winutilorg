@@ -329,20 +329,47 @@ partial class Form1
         settingsLayout.Dock = DockStyle.Top;
         settingsLayout.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
         settingsLayout.Padding = new Padding(0);
-        settingsLayout.RowCount = 4;
+        settingsLayout.RowCount = 5;
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        var settingsGuide = new Label
+        {
+            AutoSize = false,
+            Dock = DockStyle.Fill,
+            Height = 142,
+            Margin = new Padding(0, 0, 0, 12),
+            Padding = new Padding(12, 10, 12, 10),
+            BackColor = Color.FromArgb(239, 246, 252),
+            ForeColor = Color.FromArgb(45, 58, 70),
+            Text = "Settings guide\r\n" +
+                "Most users can keep the defaults. Save Settings after making changes.\r\n" +
+                "Log history limit controls how many recent activity entries are kept. Console output is " +
+                "optional diagnostic information and is normally not needed.\r\n" +
+                "Rename template tokens: {name} keeps the original name, {index} adds a number " +
+                "(001, 002, ...), and {extension} keeps the extension. Example: {name}-{index} " +
+                "becomes report-001.pdf. If {extension} is not used, the original extension is kept automatically."
+        };
         ShowConsoleOutputCheckBox.AutoSize = true;
         ShowConsoleOutputCheckBox.Text = "Enable optional console output";
-        var retentionLabel = new Label { AutoSize = true, Text = "Log retention limit:", Anchor = AnchorStyles.Left };
+        var retentionLabel = new Label
+        {
+            AutoSize = true,
+            Text = "Log history limit:",
+            Anchor = AnchorStyles.Left
+        };
         LogRetentionNumeric.Maximum = 1000;
         LogRetentionNumeric.Minimum = 1;
         LogRetentionNumeric.Value = 100;
         LogRetentionNumeric.Anchor = AnchorStyles.Left;
-        var templateLabel = new Label { AutoSize = true, Text = "Rename template:", Anchor = AnchorStyles.Left };
+        var templateLabel = new Label
+        {
+            AutoSize = true,
+            Text = "Rename template:",
+            Anchor = AnchorStyles.Left
+        };
         RenameTemplateTextBox.Dock = DockStyle.Fill;
         RenameTemplateTextBox.Margin = new Padding(3, 3, 3, 8);
         saveSettingsButton.Text = "Save Settings";
@@ -360,13 +387,15 @@ partial class Form1
         };
         settingsButtons.Controls.Add(saveSettingsButton);
         settingsButtons.Controls.Add(resetSettingsButton);
-        settingsLayout.Controls.Add(ShowConsoleOutputCheckBox, 0, 0);
+        settingsLayout.Controls.Add(settingsGuide, 0, 0);
+        settingsLayout.SetColumnSpan(settingsGuide, 2);
+        settingsLayout.Controls.Add(ShowConsoleOutputCheckBox, 0, 1);
         settingsLayout.SetColumnSpan(ShowConsoleOutputCheckBox, 2);
-        settingsLayout.Controls.Add(retentionLabel, 0, 1);
-        settingsLayout.Controls.Add(LogRetentionNumeric, 1, 1);
-        settingsLayout.Controls.Add(templateLabel, 0, 2);
-        settingsLayout.Controls.Add(RenameTemplateTextBox, 1, 2);
-        settingsLayout.Controls.Add(settingsButtons, 0, 3);
+        settingsLayout.Controls.Add(retentionLabel, 0, 2);
+        settingsLayout.Controls.Add(LogRetentionNumeric, 1, 2);
+        settingsLayout.Controls.Add(templateLabel, 0, 3);
+        settingsLayout.Controls.Add(RenameTemplateTextBox, 1, 3);
+        settingsLayout.Controls.Add(settingsButtons, 0, 4);
         settingsLayout.SetColumnSpan(settingsButtons, 2);
         settingsPanel.Controls.Add(settingsLayout);
 
