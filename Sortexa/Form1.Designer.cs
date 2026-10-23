@@ -37,6 +37,7 @@ partial class Form1
     private Button saveSettingsButton = null!;
     private Button resetSettingsButton = null!;
     private Panel helpPanel = null!;
+    private Button replayWelcomeButton = null!;
     private StatusStrip statusStrip = null!;
     private ToolStripStatusLabel statusLabel = null!;
 
@@ -87,6 +88,7 @@ partial class Form1
         saveSettingsButton = new Button();
         resetSettingsButton = new Button();
         helpPanel = new Panel();
+        replayWelcomeButton = new Button();
         statusStrip = new StatusStrip();
         statusLabel = new ToolStripStatusLabel();
         rootLayout.SuspendLayout();
@@ -138,7 +140,7 @@ partial class Form1
 
         contentPanel.BackColor = Color.FromArgb(247, 249, 251);
         contentPanel.Dock = DockStyle.Fill;
-        contentPanel.Padding = new Padding(34, 30, 34, 26);
+        contentPanel.Padding = new Padding(34, 125, 34, 26);
         contentPanel.Controls.Add(dashboardLayout);
         contentPanel.Controls.Add(organizerPanel);
         contentPanel.Controls.Add(logsPanel);
@@ -159,7 +161,7 @@ partial class Form1
         pageDescriptionLabel.Location = new Point(37, 75);
         pageDescriptionLabel.Text = "Organize your files safely from one place.";
 
-        dashboardLayout.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        dashboardLayout.Dock = DockStyle.Fill;
         dashboardLayout.ColumnCount = 2;
         dashboardLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
         dashboardLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -167,9 +169,7 @@ partial class Form1
         dashboardLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
         dashboardLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
         dashboardLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        dashboardLayout.Location = new Point(34, 125);
         dashboardLayout.Margin = new Padding(0);
-        dashboardLayout.Size = new Size(612, 341);
         dashboardLayout.Controls.Add(CreateActionButton("Select Folder", "Choose a source folder", SelectFolderButton_Click), 0, 0);
         dashboardLayout.Controls.Add(CreateActionButton("Preview Changes", "Review the plan before changes", PreviewButton_Click), 1, 0);
         dashboardLayout.Controls.Add(CreateActionButton("Organize Files", "Apply the approved organization plan", OrganizeButton_Click), 0, 1);
@@ -177,11 +177,9 @@ partial class Form1
         dashboardLayout.Controls.Add(CreateFolderSummary(), 0, 2);
         dashboardLayout.SetColumnSpan(dashboardLayout.GetControlFromPosition(0, 2)!, 2);
 
-        organizerPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        organizerPanel.Dock = DockStyle.Fill;
         organizerPanel.BackColor = Color.White;
-        organizerPanel.Location = new Point(34, 125);
         organizerPanel.Padding = new Padding(12);
-        organizerPanel.Size = new Size(612, 341);
         organizerPanel.Visible = false;
         organizerPanel.Controls.Add(fileGrid);
         organizerPanel.Controls.Add(planGrid);
@@ -225,7 +223,7 @@ partial class Form1
 
         fileGrid.AllowUserToAddRows = false;
         fileGrid.AllowUserToDeleteRows = false;
-        fileGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        fileGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left;
         fileGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         fileGrid.BackgroundColor = Color.White;
         fileGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -267,7 +265,7 @@ partial class Form1
 
         planGrid.AllowUserToAddRows = false;
         planGrid.AllowUserToDeleteRows = false;
-        planGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        planGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left;
         planGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         planGrid.BackgroundColor = Color.White;
         planGrid.Location = new Point(12, 75);
@@ -281,10 +279,8 @@ partial class Form1
         planGrid.Columns.Add("Destination", "Destination");
         planGrid.Columns.Add("Status", "Status");
 
-        logsPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        logsPanel.Dock = DockStyle.Fill;
         logsPanel.BackColor = Color.White;
-        logsPanel.Location = new Point(34, 125);
-        logsPanel.Size = new Size(612, 341);
         logsPanel.Visible = false;
         logsPanel.Controls.Add(activityGrid);
         logsPanel.Controls.Add(refreshLogsButton);
@@ -306,11 +302,9 @@ partial class Form1
         activityGrid.Columns.Add("Status", "Status");
         activityGrid.Columns.Add("Details", "Details");
 
-        settingsPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        settingsPanel.Dock = DockStyle.Fill;
         settingsPanel.BackColor = Color.White;
-        settingsPanel.Location = new Point(34, 125);
         settingsPanel.Padding = new Padding(18);
-        settingsPanel.Size = new Size(612, 341);
         settingsPanel.Visible = false;
         IncludeSubdirectoriesCheckBox.AutoSize = true;
         IncludeSubdirectoriesCheckBox.Location = new Point(18, 20);
@@ -340,11 +334,9 @@ partial class Form1
             saveSettingsButton, resetSettingsButton
         ]);
 
-        helpPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        helpPanel.Dock = DockStyle.Fill;
         helpPanel.BackColor = Color.White;
-        helpPanel.Location = new Point(34, 125);
         helpPanel.Padding = new Padding(22);
-        helpPanel.Size = new Size(612, 341);
         helpPanel.Visible = false;
         var helpText = new Label
         {
@@ -355,6 +347,17 @@ partial class Form1
             Text = "Quick start\r\n\r\n1. Select a source folder.\r\n2. Scan and review the files.\r\n3. Choose a destination and preview the plan.\r\n4. Resolve conflicts before organizing.\r\n5. Use Undo Last Operation when the original files are still available.\r\n\r\nSortexa\r\nA local-first Windows file organization toolkit.",
         };
         helpPanel.Controls.Add(helpText);
+        replayWelcomeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        replayWelcomeButton.BackColor = Color.FromArgb(42, 107, 153);
+        replayWelcomeButton.FlatStyle = FlatStyle.Flat;
+        replayWelcomeButton.ForeColor = Color.White;
+        replayWelcomeButton.Location = new Point(22, 285);
+        replayWelcomeButton.Size = new Size(155, 32);
+        replayWelcomeButton.Text = "Show welcome again";
+        replayWelcomeButton.UseVisualStyleBackColor = false;
+        replayWelcomeButton.FlatAppearance.BorderSize = 0;
+        replayWelcomeButton.Click += ReplayWelcomeButton_Click;
+        helpPanel.Controls.Add(replayWelcomeButton);
 
         statusStrip.Items.Add(statusLabel);
         statusStrip.Dock = DockStyle.Bottom;
@@ -395,7 +398,12 @@ partial class Form1
             Width = 174
         };
         button.FlatAppearance.BorderSize = 0;
+        button.Cursor = Cursors.Hand;
+        button.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+        button.Padding = new Padding(10, 0, 8, 0);
         button.Click += NavigationButton_Click;
+        button.MouseEnter += NavigationButton_MouseEnter;
+        button.MouseLeave += NavigationButton_MouseLeave;
         navigationPanel.Controls.Add(button);
     }
 
@@ -411,10 +419,14 @@ partial class Form1
             Margin = new Padding(0, 0, 12, 12),
             Text = $"{title}{Environment.NewLine}{description}",
             TextAlign = ContentAlignment.MiddleLeft,
-            UseVisualStyleBackColor = false
+            UseVisualStyleBackColor = false,
+            Cursor = Cursors.Hand,
+            Padding = new Padding(18, 12, 12, 10)
         };
         button.FlatAppearance.BorderColor = Color.FromArgb(220, 226, 232);
         button.FlatAppearance.BorderSize = 1;
+        button.MouseEnter += ActionButton_MouseEnter;
+        button.MouseLeave += ActionButton_MouseLeave;
         button.Click += handler;
         return button;
     }

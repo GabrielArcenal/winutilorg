@@ -3,6 +3,7 @@ namespace Sortexa;
 using Sortexa.Models;
 using Sortexa.Services;
 using Sortexa.Storage;
+using Sortexa.Forms;
 
 public partial class Form1 : Form
 {
@@ -23,6 +24,7 @@ public partial class Form1 : Form
     private AppSettings settings = new();
     private IReadOnlyList<FileMetadata> scannedFiles = Array.Empty<FileMetadata>();
     private OrganizationPlan? currentPlan;
+    private Button? selectedNavigationButton;
 
     public Form1()
     {
@@ -31,6 +33,10 @@ public partial class Form1 : Form
         Load += Form1_Load;
         FormClosing += Form1_FormClosing;
         UpdateStatus("Ready");
+        selectedNavigationButton = navigationPanel.Controls.OfType<Button>().FirstOrDefault();
+        contentPanel.Resize += ContentPanel_Resize;
+        organizerPanel.Resize += OrganizerPanel_Resize;
+        LayoutResponsiveControls();
     }
 
     private async void Form1_Load(object? sender, EventArgs e)
@@ -43,6 +49,10 @@ public partial class Form1 : Form
             LogRetentionNumeric.Value = Math.Clamp(settings.LogRetentionLimit, 1, 1000);
             RenameTemplateTextBox.Text = settings.RenameTemplate;
             RestoreWindowState();
+            if (settings.ShowWelcomeOnStartup)
+            {
+                ShowWelcomeDialog();
+            }
         }
         catch (IOException exception)
         {
@@ -59,7 +69,8 @@ public partial class Form1 : Form
                 IncludeSubdirectories = IncludeSubdirectoriesCheckBox.Checked,
                 ShowConsoleOutput = ShowConsoleOutputCheckBox.Checked,
                 LogRetentionLimit = (int)LogRetentionNumeric.Value,
-                RenameTemplate = RenameTemplateTextBox.Text
+                RenameTemplate = RenameTemplateTextBox.Text,
+                ShowWelcomeOnStartup = settings.ShowWelcomeOnStartup
             };
             await settingsStore.SaveAsync(settings);
             SaveWindowState();
@@ -75,6 +86,14 @@ public partial class Form1 : Form
         if (sender is not Button button)
         {
             return;
+        }
+
+        selectedNavigationButton = button;
+        foreach (var navigationButton in navigationPanel.Controls.OfType<Button>())
+        {
+            navigationButton.BackColor = navigationButton == selectedNavigationButton
+                ? Color.FromArgb(55, 83, 108)
+                : Color.FromArgb(29, 43, 58);
         }
 
         pageTitleLabel.Text = button.Text;
@@ -94,6 +113,97 @@ public partial class Form1 : Form
         };
 
         UpdateStatus($"{button.Text} selected");
+    }
+
+    private void ContentPanel_Resize(object? sender, EventArgs e)
+    {
+        LayoutResponsiveControls();
+    }
+
+    private void NavigationButton_MouseEnter(object? sender, EventArgs e)
+    {
+        if (sender is Button button && button != selectedNavigationButton)
+        {
+            button.BackColor = Color.FromArgb(43, 64, 84);
+        }
+    }
+
+    private void NavigationButton_MouseLeave(object? sender, EventArgs e)
+    {
+        if (sender is Button button && button != selectedNavigationButton)
+        {
+            button.BackColor = Color.FromArgb(29, 43, 58);
+        }
+    }
+
+    private void ActionButton_MouseEnter(object? sender, EventArgs e)
+    {
+        if (sender is Button button)
+        {
+            button.BackColor = Color.FromArgb(242, 247, 251);
+        }
+    }
+
+    private void ActionButton_MouseLeave(object? sender, EventArgs e)
+    {
+        if (sender is Button button)
+        {
+            button.BackColor = Color.White;
+        }
+    }
+
+    private void ShowWelcomeDialog()
+    {
+        using var welcomeForm = new WelcomeForm();
+        welcomeForm.ShowDialog(this);
+        if (!welcomeForm.DontShowAgain)
+        {
+            return;
+        }
+
+        settings = settings with { ShowWelcomeOnStartup = false };
+        _ = settingsStore.SaveAsync(settings);
+        UpdateStatus("Welcome message disabled");
+    }
+
+    private void OrganizerPanel_Resize(object? sender, EventArgs e)
+    {
+        LayoutOrganizerControls();
+    }
+
+    private void LayoutResponsiveControls()
+    {
+        dashboardLayout.Dock = DockStyle.Fill;
+        organizerPanel.Dock = DockStyle.Fill;
+        logsPanel.Dock = DockStyle.Fill;
+        settingsPanel.Dock = DockStyle.Fill;
+        helpPanel.Dock = DockStyle.Fill;
+        LayoutOrganizerControls();
+    }
+
+    private void LayoutOrganizerControls()
+    {
+        if (organizerPanel.ClientSize.Width <= 0 || organizerPanel.ClientSize.Height <= 0)
+        {
+            return;
+        }
+
+        var left = organizerPanel.Padding.Left;
+        var right = organizerPanel.ClientSize.Width - organizerPanel.Padding.Right;
+        var width = Math.Max(0, right - left);
+        var gridTop = 75;
+        var bottomAreaHeight = 94;
+        var gridHeight = Math.Max(80, organizerPanel.ClientSize.Height - gridTop - bottomAreaHeight);
+
+        fileGrid.SetBounds(left, gridTop, width, gridHeight);
+        planGrid.SetBounds(left, gridTop, width, gridHeight);
+
+        var bottomTop = gridTop + gridHeight + 10;
+        destinationFolderTextBox.SetBounds(left, bottomTop, Math.Max(120, width - 236), 23);
+        destinationFolderButton.SetBounds(Math.Max(left, right - 218), bottomTop - 2, 100, 27);
+        previewPlanButton.SetBounds(Math.Max(left, right - 110), bottomTop - 2, 110, 27);
+        executePlanButton.SetBounds(left, bottomTop + 34, 125, 27);
+        planSummaryLabel.Location = new Point(left + 138, bottomTop + 41);
     }
 
     private void SelectFolderButton_Click(object? sender, EventArgs e)
@@ -408,7 +518,8 @@ public partial class Form1 : Form
             IncludeSubdirectories = IncludeSubdirectoriesCheckBox.Checked,
             ShowConsoleOutput = ShowConsoleOutputCheckBox.Checked,
             LogRetentionLimit = (int)LogRetentionNumeric.Value,
-            RenameTemplate = RenameTemplateTextBox.Text
+            RenameTemplate = RenameTemplateTextBox.Text,
+            ShowWelcomeOnStartup = settings.ShowWelcomeOnStartup
         };
         await settingsStore.SaveAsync(settings);
         UpdateStatus("Settings saved");
@@ -429,6 +540,11 @@ public partial class Form1 : Form
         RenameTemplateTextBox.Text = settings.RenameTemplate;
         await settingsStore.SaveAsync(settings);
         UpdateStatus("Settings reset to defaults");
+    }
+
+    private void ReplayWelcomeButton_Click(object? sender, EventArgs e)
+    {
+        ShowWelcomeDialog();
     }
 
     private void RestoreWindowState()
