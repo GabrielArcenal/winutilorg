@@ -1,0 +1,13 @@
+## Build output
+**/bin/
+**/obj/
+
+## Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+## User-specific project files
+*.user
+*.suo
+
