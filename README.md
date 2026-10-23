@@ -162,6 +162,30 @@ The published executable includes the .NET runtime, so a separate .NET installat
 
 The standalone build is more convenient to distribute, but it normally uses more memory because it carries and loads its own .NET runtime. The application itself does not continuously load file contents into memory; it reads file metadata while scanning and stores only the current plan and operation history.
 
+### Installer for sharing
+
+The repository includes an Inno Setup definition for creating a normal Windows installer. The installer uses the self-contained build, creates Start Menu and optional desktop shortcuts, and installs per-user under:
+
+```text
+%LOCALAPPDATA%\Programs\Sortexa\
+```
+
+It does not require administrator permission and does not delete Sortexa's user data under `%LOCALAPPDATA%\Sortexa\` when uninstalled.
+
+Install [Inno Setup](https://jrsoftware.org/isinfo.php), then run from the repository root:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File installer\Build-Installer.ps1
+```
+
+The shareable installer is created at:
+
+```text
+Sortexa\bin\installer\Sortexa-Setup.exe
+```
+
+This is currently a prototype release. Before sharing broadly, test the installer on a clean Windows machine and share it only with people who understand that the application is still WIP.
+
 ## Publish a Windows build
 
 For a self-contained 64-bit Windows build:
