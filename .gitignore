@@ -1,6 +1,7 @@
 ## Build output
 **/bin/
 **/obj/
+**/publish/
 
 ## Visual Studio Code
 .vscode/*
@@ -10,4 +11,3 @@
 ## User-specific project files
 *.user
 *.suo
-

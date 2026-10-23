@@ -13,6 +13,30 @@ partial class Form1
     private Label pageDescriptionLabel = null!;
     private TableLayoutPanel dashboardLayout = null!;
     private Label selectedFolderLabel = null!;
+    private Panel organizerPanel = null!;
+    private Button selectFolderButton = null!;
+    private Button previewButton = null!;
+    private Button cancelScanButton = null!;
+    private Label scanProgressLabel = null!;
+    private Label skippedFilesLabel = null!;
+    private DataGridView fileGrid = null!;
+    private TextBox destinationFolderTextBox = null!;
+    private Button destinationFolderButton = null!;
+    private Button previewPlanButton = null!;
+    private Button executePlanButton = null!;
+    private Label planSummaryLabel = null!;
+    private DataGridView planGrid = null!;
+    private Panel logsPanel = null!;
+    private DataGridView activityGrid = null!;
+    private Button refreshLogsButton = null!;
+    private Panel settingsPanel = null!;
+    private CheckBox IncludeSubdirectoriesCheckBox = null!;
+    private CheckBox ShowConsoleOutputCheckBox = null!;
+    private NumericUpDown LogRetentionNumeric = null!;
+    private TextBox RenameTemplateTextBox = null!;
+    private Button saveSettingsButton = null!;
+    private Button resetSettingsButton = null!;
+    private Panel helpPanel = null!;
     private StatusStrip statusStrip = null!;
     private ToolStripStatusLabel statusLabel = null!;
 
@@ -39,6 +63,30 @@ partial class Form1
         pageDescriptionLabel = new Label();
         dashboardLayout = new TableLayoutPanel();
         selectedFolderLabel = new Label();
+        organizerPanel = new Panel();
+        selectFolderButton = new Button();
+        previewButton = new Button();
+        cancelScanButton = new Button();
+        scanProgressLabel = new Label();
+        skippedFilesLabel = new Label();
+        fileGrid = new DataGridView();
+        destinationFolderTextBox = new TextBox();
+        destinationFolderButton = new Button();
+        previewPlanButton = new Button();
+        executePlanButton = new Button();
+        planSummaryLabel = new Label();
+        planGrid = new DataGridView();
+        logsPanel = new Panel();
+        activityGrid = new DataGridView();
+        refreshLogsButton = new Button();
+        settingsPanel = new Panel();
+        IncludeSubdirectoriesCheckBox = new CheckBox();
+        ShowConsoleOutputCheckBox = new CheckBox();
+        LogRetentionNumeric = new NumericUpDown();
+        RenameTemplateTextBox = new TextBox();
+        saveSettingsButton = new Button();
+        resetSettingsButton = new Button();
+        helpPanel = new Panel();
         statusStrip = new StatusStrip();
         statusLabel = new ToolStripStatusLabel();
         rootLayout.SuspendLayout();
@@ -92,6 +140,10 @@ partial class Form1
         contentPanel.Dock = DockStyle.Fill;
         contentPanel.Padding = new Padding(34, 30, 34, 26);
         contentPanel.Controls.Add(dashboardLayout);
+        contentPanel.Controls.Add(organizerPanel);
+        contentPanel.Controls.Add(logsPanel);
+        contentPanel.Controls.Add(settingsPanel);
+        contentPanel.Controls.Add(helpPanel);
         contentPanel.Controls.Add(pageDescriptionLabel);
         contentPanel.Controls.Add(pageTitleLabel);
 
@@ -124,6 +176,185 @@ partial class Form1
         dashboardLayout.Controls.Add(CreateActionButton("Undo Last Operation", "Restore files when it is safe", UndoButton_Click), 1, 1);
         dashboardLayout.Controls.Add(CreateFolderSummary(), 0, 2);
         dashboardLayout.SetColumnSpan(dashboardLayout.GetControlFromPosition(0, 2)!, 2);
+
+        organizerPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        organizerPanel.BackColor = Color.White;
+        organizerPanel.Location = new Point(34, 125);
+        organizerPanel.Padding = new Padding(12);
+        organizerPanel.Size = new Size(612, 341);
+        organizerPanel.Visible = false;
+        organizerPanel.Controls.Add(fileGrid);
+        organizerPanel.Controls.Add(planGrid);
+        organizerPanel.Controls.Add(planSummaryLabel);
+        organizerPanel.Controls.Add(executePlanButton);
+        organizerPanel.Controls.Add(previewPlanButton);
+        organizerPanel.Controls.Add(destinationFolderButton);
+        organizerPanel.Controls.Add(destinationFolderTextBox);
+        organizerPanel.Controls.Add(skippedFilesLabel);
+        organizerPanel.Controls.Add(scanProgressLabel);
+        organizerPanel.Controls.Add(cancelScanButton);
+        organizerPanel.Controls.Add(previewButton);
+        organizerPanel.Controls.Add(selectFolderButton);
+
+        selectFolderButton.Location = new Point(12, 12);
+        selectFolderButton.Size = new Size(112, 30);
+        selectFolderButton.Text = "Select Folder";
+        selectFolderButton.Click += SelectFolderButton_Click;
+
+        previewButton.Location = new Point(130, 12);
+        previewButton.Size = new Size(112, 30);
+        previewButton.Text = "Scan Folder";
+        previewButton.Click += PreviewButton_Click;
+
+        cancelScanButton.Enabled = false;
+        cancelScanButton.Location = new Point(248, 12);
+        cancelScanButton.Size = new Size(112, 30);
+        cancelScanButton.Text = "Cancel Scan";
+        cancelScanButton.Click += CancelScanButton_Click;
+
+        scanProgressLabel.AutoSize = true;
+        scanProgressLabel.ForeColor = Color.FromArgb(91, 106, 120);
+        scanProgressLabel.Location = new Point(375, 20);
+        scanProgressLabel.Text = "0 files inspected";
+        scanProgressLabel.Visible = false;
+
+        skippedFilesLabel.AutoSize = true;
+        skippedFilesLabel.ForeColor = Color.FromArgb(91, 106, 120);
+        skippedFilesLabel.Location = new Point(12, 49);
+        skippedFilesLabel.Text = "Select a folder to scan";
+
+        fileGrid.AllowUserToAddRows = false;
+        fileGrid.AllowUserToDeleteRows = false;
+        fileGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        fileGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        fileGrid.BackgroundColor = Color.White;
+        fileGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        fileGrid.Location = new Point(12, 75);
+        fileGrid.ReadOnly = true;
+        fileGrid.RowHeadersVisible = false;
+        fileGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        fileGrid.Size = new Size(588, 204);
+        fileGrid.Columns.Add("Name", "Name");
+        fileGrid.Columns.Add("Extension", "Extension");
+        fileGrid.Columns.Add("Size", "Size");
+        fileGrid.Columns.Add("Modified", "Modified");
+        fileGrid.Columns.Add("Category", "Category");
+
+        destinationFolderTextBox.Location = new Point(12, 290);
+        destinationFolderTextBox.Size = new Size(350, 23);
+        destinationFolderTextBox.PlaceholderText = "Destination folder";
+
+        destinationFolderButton.Location = new Point(368, 288);
+        destinationFolderButton.Size = new Size(105, 27);
+        destinationFolderButton.Text = "Choose...";
+        destinationFolderButton.Click += DestinationFolderButton_Click;
+
+        previewPlanButton.Location = new Point(481, 288);
+        previewPlanButton.Size = new Size(105, 27);
+        previewPlanButton.Text = "Preview Plan";
+        previewPlanButton.Click += PreviewPlanButton_Click;
+
+        executePlanButton.Enabled = false;
+        executePlanButton.Location = new Point(12, 320);
+        executePlanButton.Size = new Size(125, 27);
+        executePlanButton.Text = "Organize Files";
+        executePlanButton.Click += ExecutePlanButton_Click;
+
+        planSummaryLabel.AutoSize = true;
+        planSummaryLabel.ForeColor = Color.FromArgb(91, 106, 120);
+        planSummaryLabel.Location = new Point(150, 327);
+        planSummaryLabel.Text = "Preview a plan before organizing";
+
+        planGrid.AllowUserToAddRows = false;
+        planGrid.AllowUserToDeleteRows = false;
+        planGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        planGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        planGrid.BackgroundColor = Color.White;
+        planGrid.Location = new Point(12, 75);
+        planGrid.ReadOnly = true;
+        planGrid.RowHeadersVisible = false;
+        planGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        planGrid.Size = new Size(588, 204);
+        planGrid.Visible = false;
+        planGrid.Columns.Add("Name", "Name");
+        planGrid.Columns.Add("Category", "Category");
+        planGrid.Columns.Add("Destination", "Destination");
+        planGrid.Columns.Add("Status", "Status");
+
+        logsPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        logsPanel.BackColor = Color.White;
+        logsPanel.Location = new Point(34, 125);
+        logsPanel.Size = new Size(612, 341);
+        logsPanel.Visible = false;
+        logsPanel.Controls.Add(activityGrid);
+        logsPanel.Controls.Add(refreshLogsButton);
+        refreshLogsButton.Location = new Point(12, 12);
+        refreshLogsButton.Size = new Size(110, 30);
+        refreshLogsButton.Text = "Refresh";
+        refreshLogsButton.Click += RefreshLogsButton_Click;
+        activityGrid.AllowUserToAddRows = false;
+        activityGrid.AllowUserToDeleteRows = false;
+        activityGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        activityGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        activityGrid.BackgroundColor = Color.White;
+        activityGrid.Location = new Point(12, 52);
+        activityGrid.ReadOnly = true;
+        activityGrid.RowHeadersVisible = false;
+        activityGrid.Size = new Size(588, 275);
+        activityGrid.Columns.Add("Timestamp", "Timestamp");
+        activityGrid.Columns.Add("Action", "Action");
+        activityGrid.Columns.Add("Status", "Status");
+        activityGrid.Columns.Add("Details", "Details");
+
+        settingsPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        settingsPanel.BackColor = Color.White;
+        settingsPanel.Location = new Point(34, 125);
+        settingsPanel.Padding = new Padding(18);
+        settingsPanel.Size = new Size(612, 341);
+        settingsPanel.Visible = false;
+        IncludeSubdirectoriesCheckBox.AutoSize = true;
+        IncludeSubdirectoriesCheckBox.Location = new Point(18, 20);
+        IncludeSubdirectoriesCheckBox.Text = "Scan subdirectories";
+        ShowConsoleOutputCheckBox.AutoSize = true;
+        ShowConsoleOutputCheckBox.Location = new Point(18, 52);
+        ShowConsoleOutputCheckBox.Text = "Enable optional console output";
+        var retentionLabel = new Label { AutoSize = true, Location = new Point(18, 90), Text = "Log retention limit:" };
+        LogRetentionNumeric.Location = new Point(140, 87);
+        LogRetentionNumeric.Maximum = 1000;
+        LogRetentionNumeric.Minimum = 1;
+        LogRetentionNumeric.Value = 100;
+        var templateLabel = new Label { AutoSize = true, Location = new Point(18, 130), Text = "Rename template:" };
+        RenameTemplateTextBox.Location = new Point(140, 127);
+        RenameTemplateTextBox.Size = new Size(300, 23);
+        saveSettingsButton.Location = new Point(18, 180);
+        saveSettingsButton.Size = new Size(110, 30);
+        saveSettingsButton.Text = "Save Settings";
+        saveSettingsButton.Click += SaveSettingsButton_Click;
+        resetSettingsButton.Location = new Point(140, 180);
+        resetSettingsButton.Size = new Size(125, 30);
+        resetSettingsButton.Text = "Reset Defaults";
+        resetSettingsButton.Click += ResetSettingsButton_Click;
+        settingsPanel.Controls.AddRange([
+            IncludeSubdirectoriesCheckBox, ShowConsoleOutputCheckBox, retentionLabel,
+            LogRetentionNumeric, templateLabel, RenameTemplateTextBox,
+            saveSettingsButton, resetSettingsButton
+        ]);
+
+        helpPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        helpPanel.BackColor = Color.White;
+        helpPanel.Location = new Point(34, 125);
+        helpPanel.Padding = new Padding(22);
+        helpPanel.Size = new Size(612, 341);
+        helpPanel.Visible = false;
+        var helpText = new Label
+        {
+            AutoSize = false,
+            Dock = DockStyle.Fill,
+            Font = new Font("Segoe UI", 10F),
+            ForeColor = Color.FromArgb(45, 58, 70),
+            Text = "Quick start\r\n\r\n1. Select a source folder.\r\n2. Scan and review the files.\r\n3. Choose a destination and preview the plan.\r\n4. Resolve conflicts before organizing.\r\n5. Use Undo Last Operation when the original files are still available.\r\n\r\nSortexa\r\nA local-first Windows file organization toolkit.",
+        };
+        helpPanel.Controls.Add(helpText);
 
         statusStrip.Items.Add(statusLabel);
         statusStrip.Dock = DockStyle.Bottom;
