@@ -30,6 +30,7 @@ partial class Form1
     private DataGridView activityGrid = null!;
     private Button refreshLogsButton = null!;
     private Panel settingsPanel = null!;
+    private TableLayoutPanel settingsLayout = null!;
     private CheckBox IncludeSubdirectoriesCheckBox = null!;
     private CheckBox ShowConsoleOutputCheckBox = null!;
     private NumericUpDown LogRetentionNumeric = null!;
@@ -81,6 +82,7 @@ partial class Form1
         activityGrid = new DataGridView();
         refreshLogsButton = new Button();
         settingsPanel = new Panel();
+        settingsLayout = new TableLayoutPanel();
         IncludeSubdirectoriesCheckBox = new CheckBox();
         ShowConsoleOutputCheckBox = new CheckBox();
         LogRetentionNumeric = new NumericUpDown();
@@ -321,34 +323,58 @@ partial class Form1
         settingsPanel.AutoScroll = true;
         settingsPanel.Padding = new Padding(18);
         settingsPanel.Visible = false;
+        settingsLayout.AutoSize = true;
+        settingsLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        settingsLayout.ColumnCount = 2;
+        settingsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 145F));
+        settingsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        settingsLayout.Dock = DockStyle.Top;
+        settingsLayout.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+        settingsLayout.Padding = new Padding(0);
+        settingsLayout.RowCount = 5;
+        settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        settingsLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         IncludeSubdirectoriesCheckBox.AutoSize = true;
-        IncludeSubdirectoriesCheckBox.Location = new Point(18, 20);
         IncludeSubdirectoriesCheckBox.Text = "Scan subdirectories";
         ShowConsoleOutputCheckBox.AutoSize = true;
-        ShowConsoleOutputCheckBox.Location = new Point(18, 52);
         ShowConsoleOutputCheckBox.Text = "Enable optional console output";
-        var retentionLabel = new Label { AutoSize = true, Location = new Point(18, 90), Text = "Log retention limit:" };
-        LogRetentionNumeric.Location = new Point(140, 87);
+        var retentionLabel = new Label { AutoSize = true, Text = "Log retention limit:", Anchor = AnchorStyles.Left };
         LogRetentionNumeric.Maximum = 1000;
         LogRetentionNumeric.Minimum = 1;
         LogRetentionNumeric.Value = 100;
-        var templateLabel = new Label { AutoSize = true, Location = new Point(18, 130), Text = "Rename template:" };
-        RenameTemplateTextBox.Location = new Point(140, 127);
-        RenameTemplateTextBox.Size = new Size(300, 23);
-        RenameTemplateTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        saveSettingsButton.Location = new Point(18, 180);
-        saveSettingsButton.Size = new Size(110, 30);
+        LogRetentionNumeric.Anchor = AnchorStyles.Left;
+        var templateLabel = new Label { AutoSize = true, Text = "Rename template:", Anchor = AnchorStyles.Left };
+        RenameTemplateTextBox.Dock = DockStyle.Fill;
+        RenameTemplateTextBox.Margin = new Padding(3, 3, 3, 8);
         saveSettingsButton.Text = "Save Settings";
         saveSettingsButton.Click += SaveSettingsButton_Click;
-        resetSettingsButton.Location = new Point(140, 180);
-        resetSettingsButton.Size = new Size(125, 30);
         resetSettingsButton.Text = "Reset Defaults";
         resetSettingsButton.Click += ResetSettingsButton_Click;
-        settingsPanel.Controls.AddRange([
-            IncludeSubdirectoriesCheckBox, ShowConsoleOutputCheckBox, retentionLabel,
-            LogRetentionNumeric, templateLabel, RenameTemplateTextBox,
-            saveSettingsButton, resetSettingsButton
-        ]);
+        var settingsButtons = new FlowLayoutPanel
+        {
+            AutoSize = true,
+            AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            Dock = DockStyle.Fill,
+            FlowDirection = FlowDirection.LeftToRight,
+            Margin = new Padding(0, 10, 0, 0),
+            WrapContents = true
+        };
+        settingsButtons.Controls.Add(saveSettingsButton);
+        settingsButtons.Controls.Add(resetSettingsButton);
+        settingsLayout.Controls.Add(IncludeSubdirectoriesCheckBox, 0, 0);
+        settingsLayout.SetColumnSpan(IncludeSubdirectoriesCheckBox, 2);
+        settingsLayout.Controls.Add(ShowConsoleOutputCheckBox, 0, 1);
+        settingsLayout.SetColumnSpan(ShowConsoleOutputCheckBox, 2);
+        settingsLayout.Controls.Add(retentionLabel, 0, 2);
+        settingsLayout.Controls.Add(LogRetentionNumeric, 1, 2);
+        settingsLayout.Controls.Add(templateLabel, 0, 3);
+        settingsLayout.Controls.Add(RenameTemplateTextBox, 1, 3);
+        settingsLayout.Controls.Add(settingsButtons, 0, 4);
+        settingsLayout.SetColumnSpan(settingsButtons, 2);
+        settingsPanel.Controls.Add(settingsLayout);
 
         helpPanel.Dock = DockStyle.Fill;
         helpPanel.BackColor = Color.White;
