@@ -12,7 +12,7 @@ DefaultDirName={localappdata}\Programs\Sortexa
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
-OutputDir=..\Sortexa\bin\installer
+OutputDir=..\releases
 OutputBaseFilename=Sortexa-Setup
 Compression=lzma2
 SolidCompression=yes
@@ -23,7 +23,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
 
 [Files]
-Source: "..\Sortexa\bin\installer-publish\Sortexa.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\.build\installer-publish\Sortexa.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExeName}"

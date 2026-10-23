@@ -124,7 +124,7 @@ dotnet publish Sortexa\Sortexa.csproj `
   --configuration Release `
   --runtime win-x64 `
   --self-contained false `
-  --output Sortexa\bin\lightweight
+  --output .build\lightweight
 ```
 
 This build uses the .NET runtime already installed on Windows instead of carrying a private copy of the runtime. It requires the matching .NET 10 Windows Desktop Runtime on the target computer. In local measurements, the framework-dependent build used about 13 MB of private memory compared with about 52 MB for the self-contained build. Actual Task Manager values vary by Windows version, display scaling, and workload.
@@ -132,7 +132,7 @@ This build uses the .NET runtime already installed on Windows instead of carryin
 Launch the lightweight build with:
 
 ```text
-Sortexa\bin\lightweight\Sortexa.exe
+.build\lightweight\Sortexa.exe
 ```
 
 ### Standalone build
@@ -149,13 +149,13 @@ dotnet publish Sortexa\Sortexa.csproj `
   --property:PublishSingleFile=true `
   --property:EnableCompressionInSingleFile=true `
   --property:IncludeNativeLibrariesForSelfExtract=true `
-  --output Sortexa\bin\standalone
+  --output .build\standalone
 ```
 
 Then launch:
 
 ```text
-Sortexa\bin\standalone\Sortexa.exe
+.build\standalone\Sortexa.exe
 ```
 
 The published executable includes the .NET runtime, so a separate .NET installation is not required on the target Windows computer.
@@ -181,7 +181,7 @@ powershell -ExecutionPolicy Bypass -File installer\Build-Installer.ps1
 The shareable installer is created at:
 
 ```text
-Sortexa\bin\installer\Sortexa-Setup.exe
+releases\Sortexa-Setup.exe
 ```
 
 This is currently a prototype release. Before sharing broadly, test the installer on a clean Windows machine and share it only with people who understand that the application is still WIP.
@@ -195,7 +195,7 @@ dotnet publish Sortexa\Sortexa.csproj `
   --configuration Release `
   --runtime win-x64 `
   --self-contained true `
-  --output Sortexa\bin\publish
+  --output .build\publish
 ```
 
 The publish directory is ignored by Git. Review the output and test it on a clean Windows machine before distributing it.

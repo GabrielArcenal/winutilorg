@@ -3,8 +3,8 @@
 **/obj/
 **/publish/
 **/standalone/
-**/installer-publish/
-Sortexa/bin/installer/
+.build/
+releases/
 
 ## Visual Studio Code
 .vscode/*

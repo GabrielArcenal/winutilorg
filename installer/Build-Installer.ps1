@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $projectPath = Join-Path $repositoryRoot "Sortexa\Sortexa.csproj"
-$publishPath = Join-Path $repositoryRoot "Sortexa\bin\installer-publish"
+$publishPath = Join-Path $repositoryRoot ".build\installer-publish"
 $innoCompilerPath = (Get-Command "iscc.exe" -ErrorAction SilentlyContinue).Source
 
 $knownCompilerPaths = @(
@@ -34,4 +34,4 @@ if ($LASTEXITCODE -ne 0) {
     throw "Inno Setup failed with exit code $LASTEXITCODE."
 }
 
-Write-Output "Installer created in Sortexa\bin\installer."
+Write-Output "Installer created in releases\Sortexa-Setup.exe."
