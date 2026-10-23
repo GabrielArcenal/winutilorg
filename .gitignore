@@ -5,6 +5,7 @@
 **/standalone/
 .build/
 releases/
+portable/
 
 ## Visual Studio Code
 .vscode/*

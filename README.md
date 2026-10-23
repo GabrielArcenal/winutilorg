@@ -186,6 +186,29 @@ releases\Sortexa-Setup.exe
 
 This is currently a prototype release. Before sharing broadly, test the installer on a clean Windows machine and share it only with people who understand that the application is still WIP.
 
+### Portable test build
+
+To test the same self-contained application without installing it, publish to the repository's `portable` folder:
+
+```powershell
+dotnet publish Sortexa\Sortexa.csproj `
+  --configuration Release `
+  --runtime win-x64 `
+  --self-contained true `
+  --property:PublishSingleFile=true `
+  --property:EnableCompressionInSingleFile=true `
+  --property:IncludeNativeLibrariesForSelfExtract=true `
+  --output portable
+```
+
+Then run:
+
+```text
+portable\Sortexa.exe
+```
+
+The portable folder is generated output and is ignored by Git.
+
 ## Publish a Windows build
 
 For a self-contained 64-bit Windows build:
