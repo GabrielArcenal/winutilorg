@@ -115,6 +115,30 @@ Current files include:
 
 ## Use the published app
 
+### Lightweight build
+
+For the lowest memory footprint, publish as framework-dependent:
+
+```powershell
+dotnet publish Sortexa\Sortexa.csproj `
+  --configuration Release `
+  --runtime win-x64 `
+  --self-contained false `
+  --output Sortexa\bin\lightweight
+```
+
+This build uses the .NET runtime already installed on Windows instead of carrying a private copy of the runtime. It requires the matching .NET 10 Windows Desktop Runtime on the target computer. In local measurements, the framework-dependent build used about 13 MB of private memory compared with about 52 MB for the self-contained build. Actual Task Manager values vary by Windows version, display scaling, and workload.
+
+Launch the lightweight build with:
+
+```text
+Sortexa\bin\lightweight\Sortexa.exe
+```
+
+### Standalone build
+
+For a computer that does not have the .NET Desktop Runtime installed, use the self-contained build:
+
 To create a standalone 64-bit Windows executable:
 
 ```powershell
@@ -135,6 +159,8 @@ Sortexa\bin\standalone\Sortexa.exe
 ```
 
 The published executable includes the .NET runtime, so a separate .NET installation is not required on the target Windows computer.
+
+The standalone build is more convenient to distribute, but it normally uses more memory because it carries and loads its own .NET runtime. The application itself does not continuously load file contents into memory; it reads file metadata while scanning and stores only the current plan and operation history.
 
 ## Publish a Windows build
 
