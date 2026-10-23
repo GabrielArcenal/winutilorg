@@ -281,26 +281,32 @@ partial class Form1
 
         logsPanel.Dock = DockStyle.Fill;
         logsPanel.BackColor = Color.White;
+        logsPanel.Padding = new Padding(12);
         logsPanel.Visible = false;
         logsPanel.Controls.Add(activityGrid);
         logsPanel.Controls.Add(refreshLogsButton);
-        refreshLogsButton.Location = new Point(12, 12);
-        refreshLogsButton.Size = new Size(110, 30);
+        refreshLogsButton.Dock = DockStyle.Top;
+        refreshLogsButton.Margin = new Padding(0, 0, 0, 10);
+        refreshLogsButton.Size = new Size(110, 32);
         refreshLogsButton.Text = "Refresh";
         refreshLogsButton.Click += RefreshLogsButton_Click;
         activityGrid.AllowUserToAddRows = false;
         activityGrid.AllowUserToDeleteRows = false;
-        activityGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        activityGrid.Dock = DockStyle.Fill;
         activityGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        activityGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
         activityGrid.BackgroundColor = Color.White;
-        activityGrid.Location = new Point(12, 52);
         activityGrid.ReadOnly = true;
         activityGrid.RowHeadersVisible = false;
-        activityGrid.Size = new Size(588, 275);
+        activityGrid.ScrollBars = ScrollBars.Vertical;
         activityGrid.Columns.Add("Timestamp", "Timestamp");
         activityGrid.Columns.Add("Action", "Action");
         activityGrid.Columns.Add("Status", "Status");
         activityGrid.Columns.Add("Details", "Details");
+        activityGrid.Columns["Timestamp"]!.FillWeight = 22;
+        activityGrid.Columns["Action"]!.FillWeight = 18;
+        activityGrid.Columns["Status"]!.FillWeight = 18;
+        activityGrid.Columns["Details"]!.FillWeight = 42;
 
         settingsPanel.Dock = DockStyle.Fill;
         settingsPanel.BackColor = Color.White;
