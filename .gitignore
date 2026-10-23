@@ -2,6 +2,7 @@
 **/bin/
 **/obj/
 **/publish/
+**/standalone/
 
 ## Visual Studio Code
 .vscode/*

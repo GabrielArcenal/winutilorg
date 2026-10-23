@@ -37,6 +37,7 @@ public partial class Form1 : Form
         contentPanel.Resize += ContentPanel_Resize;
         organizerPanel.Resize += OrganizerPanel_Resize;
         LayoutResponsiveControls();
+        ShowPage("Dashboard");
     }
 
     private async void Form1_Load(object? sender, EventArgs e)
@@ -88,21 +89,31 @@ public partial class Form1 : Form
             return;
         }
 
-        selectedNavigationButton = button;
-        foreach (var navigationButton in navigationPanel.Controls.OfType<Button>())
+        ShowPage(button.Text);
+    }
+
+    private void ShowPage(string pageName)
+    {
+        var pages = new Control[] { dashboardLayout, organizerPanel, logsPanel, settingsPanel, helpPanel };
+        var selectedPage = pageName switch
         {
-            navigationButton.BackColor = navigationButton == selectedNavigationButton
-                ? Color.FromArgb(55, 83, 108)
-                : Color.FromArgb(29, 43, 58);
+            "Organizer" => organizerPanel,
+            "Activity Logs" => logsPanel,
+            "Settings" => settingsPanel,
+            "Help & About" => helpPanel,
+            _ => dashboardLayout
+        };
+
+        foreach (var page in pages)
+        {
+            page.Visible = page == selectedPage;
         }
 
-        pageTitleLabel.Text = button.Text;
-        dashboardLayout.Visible = button.Text != "Organizer";
-        organizerPanel.Visible = button.Text == "Organizer";
-        logsPanel.Visible = button.Text == "Activity Logs";
-        settingsPanel.Visible = button.Text == "Settings";
-        helpPanel.Visible = button.Text == "Help & About";
-        pageDescriptionLabel.Text = button.Text switch
+        selectedPage.BringToFront();
+        pageTitleLabel.BringToFront();
+        pageDescriptionLabel.BringToFront();
+        pageTitleLabel.Text = pageName;
+        pageDescriptionLabel.Text = pageName switch
         {
             "Dashboard" => "Organize your files safely from one place.",
             "Organizer" => "Choose a folder and preview how files will be organized.",
@@ -112,7 +123,17 @@ public partial class Form1 : Form
             _ => string.Empty
         };
 
-        UpdateStatus($"{button.Text} selected");
+        selectedNavigationButton = navigationPanel.Controls
+            .OfType<Button>()
+            .FirstOrDefault(button => button.Text == pageName);
+        foreach (var navigationButton in navigationPanel.Controls.OfType<Button>())
+        {
+            navigationButton.BackColor = navigationButton == selectedNavigationButton
+                ? Color.FromArgb(55, 83, 108)
+                : Color.FromArgb(29, 43, 58);
+        }
+
+        UpdateStatus($"{pageName} selected");
     }
 
     private void ContentPanel_Resize(object? sender, EventArgs e)
@@ -321,10 +342,7 @@ public partial class Form1 : Form
 
     private void OrganizeButton_Click(object? sender, EventArgs e)
     {
-        pageTitleLabel.Text = "Organizer";
-        pageDescriptionLabel.Text = "Preview and apply a safe organization plan.";
-        dashboardLayout.Visible = false;
-        organizerPanel.Visible = true;
+        ShowPage("Organizer");
         _ = ScanSelectedFolderAsync();
     }
 
